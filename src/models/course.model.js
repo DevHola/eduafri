@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const courseModel = new mongoose.Schema({
+const CourseModel = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -27,6 +27,10 @@ const courseModel = new mongoose.Schema({
         type: Number,
         required: true
     },
+    thriller: {
+        type: String,
+        required
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'users'
@@ -51,4 +55,4 @@ const courseModel = new mongoose.Schema({
 
         }]
 }, {timestamps: true}) 
-export default mongoose.model('courses', courseModel)
+export default mongoose.model('courses', CourseModel)

@@ -50,3 +50,6 @@ export const GGstrategy = new GoogleStrategy({
     const token = await authtoken(user)
     return done(null, {access: token});
 })
+
+export const authorization = (req, res, next) => {
+}

@@ -8,7 +8,8 @@ import passport from 'passport'
 import { JStrategy } from './middlewares/passport.js'
 import { GGstrategy } from './middlewares/passport.js'
 import { fileURLToPath } from 'url'
-import router from './routes/index.route.js'
+import router from './routes/auth.route.js'
+import courserouter from './routes/course.route.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 dotenv.config({path: path.join(__dirname, '.env')})
@@ -30,6 +31,7 @@ app.use((error, req, res, next)=> {
         ...(isProduction ? null : { stack: error.stack })
       })
 })
-app.use('/api', router)
+app.use('/api/v1', router)
+app.use('/api/v1/courses', courserouter)
 
 export default app
