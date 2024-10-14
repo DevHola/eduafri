@@ -9,6 +9,7 @@ import { JStrategy } from './middlewares/passport.js'
 import { GGstrategy } from './middlewares/passport.js'
 import { fileURLToPath } from 'url'
 import router from './routes/auth.route.js'
+import caterouter from './routes/category.route.js'
 import courserouter from './routes/course.route.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -32,6 +33,7 @@ app.use((error, req, res, next)=> {
       })
 })
 app.use('/api/v1', router)
+app.use('/api/v1/category', caterouter)
 app.use('/api/v1/courses', courserouter)
 
 export default app

@@ -3,15 +3,18 @@ const CourseModel = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        lowercase: true
     },
     desc: {
         type: String,
-        required: true
+        required: true,
+        lowercase: true
     },
     level: {
         type: String,
-        required: true
+        required: true,
+        lowercase: true
     },
     total_ratings: {
         type: Number,
@@ -38,7 +41,8 @@ const CourseModel = new mongoose.Schema({
     languages_supported: [
         {
             type: String,
-            required: true
+            required: true,
+            lowercase: true
         }
     ],
     categories: [
@@ -51,7 +55,8 @@ const CourseModel = new mongoose.Schema({
     tags: [
         {
             type: String,
-            required: true
+            required: true,
+            lowercase: true
 
         }]
 }, {timestamps: true}) 

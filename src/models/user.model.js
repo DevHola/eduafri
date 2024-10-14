@@ -4,17 +4,20 @@ const salt = 10
 const UserModel = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        lowercase: true
     },
     email: {
         type: String,
         unique: true,
-        required: true
+        required: true,
+        lowercase: true
     },
     role: {
         type: String,
         required: true,
-        default: 'user'
+        default: 'user',
+        lowercase: true
     },
     password: {
         type: String
@@ -23,7 +26,8 @@ const UserModel = new mongoose.Schema({
       type: String,
       required: true,
       enum: ['google', 'local'],
-      default: 'local'
+      default: 'local',
+      lowercase: true
     },
     provider_id: {
       type: String,

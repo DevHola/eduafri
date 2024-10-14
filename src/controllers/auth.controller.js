@@ -1,7 +1,14 @@
 import { reusableMail } from "../config/mail.js"
+import { validationResult } from "express-validator"
 import { authtoken, compareAuthObject, createUser, forget, getUserByEmail } from "../services/user.js"
 
 export const Register = async (req, res, next) => {
+    const error = validationResult(req)
+    if(!error.isEmpty()) {
+        return res.status(400).json({
+            errors: error.array()
+        })
+    }
     try {
         const { name, email, role, password } = req.body
         const checkexist = await getUserByEmail(email)
@@ -26,6 +33,12 @@ export const Register = async (req, res, next) => {
 
 }
 export const login = async (req, res, next) => {
+    const error = validationResult(req)
+    if(!error.isEmpty()) {
+        return res.status(400).json({
+            errors: error.array()
+        })
+    }
     try {
         const { email, password } = req.body
         const user = await compareAuthObject(email, password)
@@ -46,6 +59,12 @@ export const login = async (req, res, next) => {
     }
 }
 export const authuser = async (req, res, next) => {
+    const error = validationResult(req)
+    if(!error.isEmpty()) {
+        return res.status(400).json({
+            errors: error.array()
+        })
+    }
     try {
         if(req.user){
             res.status(200).json({
@@ -58,6 +77,12 @@ export const authuser = async (req, res, next) => {
     
 }
 export const forgetPassword = async (req, res, next) => {
+    const error = validationResult(req)
+    if(!error.isEmpty()) {
+        return res.status(400).json({
+            errors: error.array()
+        })
+    }
     try {
         const email = req.body.email
         const user = await forget(email)
