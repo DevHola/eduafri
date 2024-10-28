@@ -34,8 +34,9 @@ const UserModel = new mongoose.Schema({
       unique: true,
       sparse: true
     },
-    resettoken: {
-        type: String
+    verified: {
+      type: Boolean,
+      default: false
     }
 }, {timestamps: true})
 UserModel.pre('save', async function (next) {
@@ -43,6 +44,19 @@ UserModel.pre('save', async function (next) {
     if (user.isModified('password')) {
       try {
         user.password = await bcrypt.hash(user.password, salt)
+      } catch (error) {
+        next(error)
+      }
+    } else {
+      next()
+    }
+  })
+  UserModel.pre('findOneAndUpdate', async function (next) {
+    const user = this.getUpdate()
+    if (user.password) {
+      try {
+        user.password = await bcrypt.hash(user.password, salt)
+        this.setUpdate(user)
       } catch (error) {
         next(error)
       }

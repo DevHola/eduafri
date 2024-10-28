@@ -1,7 +1,7 @@
 import express from 'express'
 import passport from 'passport'
-import upload from '../middlewares/multer.fu'
-import { AllCourses, create_Course, EditCourseById, GetByAuthor, GetCourseById, GetCourseByTags, GetCourseByTitle, GetCoursesByCate } from '../controllers/course.controller'
+import upload from '../middlewares/multer.fu.js'
+import { AllCourses, create_Course, EditCourseById, GetByAuthor, GetCourseById, GetCourseByTags, GetCourseByTitle, GetCoursesByCate } from '../controllers/course.controller.js'
 const courserouter = express.Router()
 courserouter.post('/', upload.array("thriller", 3) , passport.authenticate('jwt', {session: false}), create_Course)
 courserouter.get('/', passport.authenticate('jwt', { session: false }), AllCourses)

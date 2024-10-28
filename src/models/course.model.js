@@ -32,7 +32,7 @@ const CourseModel = new mongoose.Schema({
     },
     thriller: {
         type: String,
-        required
+        required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -58,6 +58,10 @@ const CourseModel = new mongoose.Schema({
             required: true,
             lowercase: true
 
-        }]
+        }],
+    isPublished: {
+        type: Boolean,
+        default: false
+    }
 }, {timestamps: true}) 
 export default mongoose.model('courses', CourseModel)

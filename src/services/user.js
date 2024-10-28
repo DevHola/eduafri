@@ -41,29 +41,20 @@ export const authtoken = async (user) => {
      const token = await jwt.sign({id: user._id, email: user.email}, process.env.AUTH_ACCESS_PRIVATE_SECRET, { algorithm: 'RS256', expiresIn: parseInt(process.env.AUTH_ACCESS_TOKEN_EXPIRY, 10) })
      return token
 }
-export const forget = async (email) => {
+export const resetAndVerify = async (user) => {
+  const token = await jwt.sign({id: user._id}, process.env.RESET_PRIVATE_SECRET, { algorithm: 'RS256', expiresIn: parseInt(process.env.RESET_TOKEN_EXPIRY, 10) })
+  return token
+}
+export const forgetAndVerify = async (email) => {
   const user = await UserModel.findOne({email, provider: 'local'})
   if(!user) {
     throw new Error('User not found')
   }
   return user
-
+}
+export const resetPassword = async (id, newpassword) => {
+  return await UserModel.findByIdAndUpdate(id, { password: newpassword }, { new: true})
 }  
-export const verify = (req, res, next) => {
-    let token = null;
-    if (req && req.headers.authorization != null) {
-        token = req.headers.authorization.split(' ')[1];
-    }
-    if (!token) {
-      res.status(401).json({
-        message: 'Missing Access Credentials'
-      })
-    }
-    try {
-      const decoded = jwt.verify(token, process.env.AUTH_ACCESS_PUBLIC_SECRET, { algorithm: 'RS256' })
-      req.user = decoded
-      next()
-    } catch (error) {
-      next(error)
-    }
+export const verify = async (id) => {
+  return await UserModel.findOneAndUpdate(id, { verified: true }, { new: true })
 }

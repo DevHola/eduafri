@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 dotenv.config({path: path.join(__dirname, '../', '.env')})
 
-const authExtractor = function(req) {
+export const authExtractor = function(req) {
     let token = null;
     if (req && req.headers.authorization != null) {
         token = req.headers.authorization.split(' ')[1];

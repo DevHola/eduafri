@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { createCourse, editCourse, getAllCourses, getCoursebyAuthor, getCourseByCategory, getCoursebyid, getCourseByTags, getCoursebytitle } from "../services/course";
+import { createCourse, editCourse, getAllCourses, getCoursebyAuthor, getCourseByCategory, getCoursebyid, getCourseByTags, getCoursebytitle } from "../services/course.js";
 export const create_Course = async (req, res, next) => {
     const error = validationResult(req)
     if(!error.isEmpty()) return res.status(400).json({errors: error.array()})
@@ -89,24 +89,22 @@ export const GetCourseByTags = async (req, res, next) => {
         })
     }
     try {
+        const { page, perPage } = req.query;
+        page = parseInt(page, 10) || 1;
+        perPage = parseInt(perPage, 10) || 10;
         const { tags } = req.body
-        const courses = await getCourseByTags(tags)
-        if(courses.length < 0 ) {
-            throw new Error('Zero Found')
-        }
-        return res.status(200).json(courses)
+        const courses = await getCourseByTags(tags, page, perPage)
+        return res.status(200).json({
+            courses,
+            currentPage:page,
+            perPage
+        })
         
     } catch (error) {
-        if (error.message === 'Zero Found'){
-            res.status(404).json({
-                message: '0 Courses found based on tags'
-            })
-        } else {
+       
             next(error)
         }
     }
-    
-}
 export const GetCoursesByCate = async (req, res, next) => {
     const error = validationResult(req)
     if(!error.isEmpty()) {
@@ -115,23 +113,21 @@ export const GetCoursesByCate = async (req, res, next) => {
         })
     }
     try {
+        const { page, perPage } = req.query;
+        page = parseInt(page, 10) || 1;
+        perPage = parseInt(perPage, 10) || 10;
         const { categories } = req.body
-        const courses = await getCourseByCategory(categories)
-        if(courses.length < 0){
-            throw new Error('Zero Found')
-        }
-        return res.status(200).json(courses)
+        const courses = await getCourseByCategory(categories, page, perPage)
+        return res.status(200).json({
+            courses,
+            currentPage: page,
+            perPage: perPage
+        })
         
     } catch (error) {
-        if (error.message === 'Zero Found'){
-            res.status(404).json({
-                message: '0 Courses found based on tags'
-            })
-        } else {
             next(error)
         }
     }
-}
 export const GetByAuthor = async (req, res, next) => {
     const error = validationResult(req)
     if(!error.isEmpty()) {
@@ -140,21 +136,19 @@ export const GetByAuthor = async (req, res, next) => {
         })
     }
     try {
-        const { _id } = req.body
-        const courses = await getCoursebyAuthor(_id)
-        if(courses.length < 0 ){
-            throw new Error('Zero Found')
-        }
-        return res.status(200).json(courses)
+        const { page, perPage } = req.query;
+        page = parseInt(page, 10) || 1;
+        perPage = parseInt(perPage, 10) || 10;
+        const { author } = req.body
+        const courses = await getCoursebyAuthor(author, page, perPage)
+        return res.status(200).json({
+            courses,
+            currentPage: page,
+            perPage: perPage
+        })
         
     } catch (error) {
-        if (error.message === 'Zero Found'){
-            res.status(404).json({
-                message: '0 Courses found based on tags'
-            })
-        } else {
             next(error)
-        }
     }   
 }
 export const EditCourseById = async (req, res, next) => {
@@ -173,7 +167,7 @@ export const EditCourseById = async (req, res, next) => {
             tags,
             languages_supported
         }
-        const course = await editCourse(data, _id)
+        const course = await editCourse(data, id)
         if(course){
             return res.status(200).json({ message: 'course updated' })
         }
@@ -190,8 +184,15 @@ export const AllCourses = async (req, res , next) => {
         })
     }
     try {
-        const courses = await getAllCourses()
-        res.status(200).json(courses)
+        const { page, perPage } = req.query;
+        page = parseInt(page, 10) || 1;
+        perPage = parseInt(perPage, 10) || 10;
+        const courses = await getAllCourses(page, perPage)
+        res.status(200).json({
+            courses,
+            currentPage: page,
+            perPage,
+        })
     } catch (error) {
         next()
     }

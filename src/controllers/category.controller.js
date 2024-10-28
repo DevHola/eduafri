@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator"
-import { createCategory, editCategoryByID, getCategoryByID, getCategoryByName } from "../services/category"
+import { createCategory, editCategoryByID, getCategoryByID, getCategoryByName } from "../services/category.js"
 export const create_Category = async (req, res, next) => {
     const error = validationResult(req)
     if(!error.isEmpty()){

@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 const host = process.env.MAIL_HOST
 const user = process.env.MAIL_USER
 const pass = process.env.MAIL_PASS
-export const reusableMail = async (subject, content, to, from) => {
+export const reusableMail = async (data) => {
   try {
     const transporter = nodemailer.createTransport({
       host,
@@ -13,10 +13,10 @@ export const reusableMail = async (subject, content, to, from) => {
       }
     })
     await transporter.sendMail({
-      from,
-      to,
-      subject,
-      html: content
+      from: data.from,
+      to: data.to,
+      subject: data.subject,
+      html: data.content
     })
   } catch (error) {
       throw new Error(`mailing failed`)
