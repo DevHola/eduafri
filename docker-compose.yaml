@@ -9,8 +9,19 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=adminUser
       - MONGO_INITDB_ROOT_PASSWORD=adminPassword
-      - MONGO_INITDB_DATABASE=eduafri
-    
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=adminUser
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=adminPassword
+
 volumes:
   mongo-data:
     driver: local

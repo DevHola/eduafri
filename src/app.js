@@ -24,7 +24,7 @@ app.use(passport.initialize());
 passport.use(JStrategy)
 passport.use(GGstrategy)
 app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: true}))
 app.use((error, req, res, next)=> {
     const isProduction = process.env.NODE_ENV === 'production'
     return res.status(500).json({

@@ -8,6 +8,7 @@ dotenv.config({path: path.join(__dirname, '../../', '.env')})
 import { connection } from "../../config/db.js";
 import mongoose from "mongoose";
 import categoryModel from "../category.model.js";
+import tagsModel from '../tags.model.js'
 const category = [
     {
         name: 'Graphic Design',
@@ -62,12 +63,16 @@ const category = [
         desc: 'Programs on requirements gathering, process modeling, business process improvement, and stakeholder management.'
     }
 ];
+const tags = []
 
 const seed = async (category) => {
     await connection()
     try {
     await categoryModel.deleteMany()
+    await tagsModel.deleteMany()
     await categoryModel.insertMany(category)
+    await tagsModel.insertMany(tags)
+    
     console.log('Data seeded successfully.')
     mongoose.connection.close()
         

@@ -6,12 +6,16 @@ export const create_Course = async (req, res, next) => {
     try {
         const { title, desc, level, price, thriller, languages_supported, categories, tags } = req.body
         const user = req.user._id
+        let filearray = []
+        for (let i = 0; i < req.files.length; i++){
+            filearray.push(req.files[i].path)
+        }
         const data = {
             title,
             desc,
             level,
             price,
-            thriller,
+            thriller: filearray,
             user,
             languages_supported,
             categories,

@@ -1,11 +1,16 @@
 import multer from "multer";
+import fs from 'fs'
+const target_folder = './temp/thrillers'
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './temp/thrillers')
+        if(!fs.existsSync(target_folder)) {
+            fs.mkdir(target_folder, error => error ? console.log(error) : console.log('You have created the target_directory'))
+        }
+        cb(null, target_folder)
     },
     filename: function (req, file, cb) {
         const suffix = Date.now() + '_' + Math.round(Math.random() * 1E9)
-        cb(null, file.filename + '_' + suffix)
+        cb(null, file.originalname + '_' + suffix)
     }
 })
 const fileFilter = (req, file, cb) => {
