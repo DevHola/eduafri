@@ -1,7 +1,3 @@
-import app from "./app.js";
-import { connection } from "./config/db.js";
+import StartApp from "./app"
 const port = process.env.PORT
-app.listen(port, () => {
-     connection()
-    console.log(`Express App Listening on ${port}`)
-})
+StartApp(port)
